@@ -1,0 +1,21 @@
+:root {
+  --color-accent: #a855f7;
+  --color-night: #14052a;
+  --color-deep: #1c0a38;
+  --color-asphalt: #26104a;
+  --color-stripe: #190832;
+  --color-lavender: #f1e9ff;
+  --color-muted: #b9a6d6;
+
+  --font-display: "Anton", Impact, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, monospace;
+
+  --text-hero: clamp(88px, 23vw, 340px);
+  --text-title: clamp(56px, 9vw, 128px);
+
+  --space-page: clamp(20px, 4vw, 48px);
+  --space-section: clamp(64px, 9vw, 104px);
+
+  --border: 2px solid var(--color-lavender);
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+}

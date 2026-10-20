@@ -1,0 +1,219 @@
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px var(--space-page);
+  border-bottom: var(--border);
+}
+
+.hero {
+  position: relative;
+  padding: 72px var(--space-page) 88px;
+  border-bottom: var(--border);
+}
+
+.hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.hero__title {
+  --delay: 0.1s;
+  position: relative;
+  z-index: 1;
+  margin-top: 24px;
+  font: 400 var(--text-hero) / 0.86 var(--font-display);
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.hero__dot {
+  color: var(--color-accent);
+}
+
+.hero__footer {
+  --delay: 0.45s;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
+  margin-top: 40px;
+}
+
+.hero__lead {
+  max-width: 520px;
+  font-size: 20px;
+  line-height: 1.5;
+}
+
+.hero__lead strong {
+  color: var(--color-accent);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.hero__badge {
+  position: absolute;
+  top: 90px;
+  right: var(--space-page);
+  width: 170px;
+  aspect-ratio: 1;
+  color: var(--color-accent);
+}
+
+.hero__ring {
+  width: 100%;
+  animation: spin 20s linear infinite;
+}
+
+.hero__ring text {
+  font: 700 15px var(--font-mono);
+  fill: currentColor;
+}
+
+.hero__badge-mark {
+  position: absolute;
+  inset: 0;
+  width: 64px;
+  height: 57px;
+  margin: auto;
+}
+
+.section__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.section__note {
+  max-width: 360px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-muted);
+}
+
+.manifesto {
+  border-bottom-color: var(--color-night);
+  background: var(--color-accent);
+  color: var(--color-night);
+}
+
+.manifesto .eyebrow {
+  color: inherit;
+  font-weight: 700;
+}
+
+.manifesto__text {
+  max-width: 1100px;
+  margin-top: 24px;
+  font: 400 clamp(36px, 6vw, 88px) / 1.02 var(--font-display);
+  text-transform: uppercase;
+}
+
+.principles {
+  --min: 220px;
+  gap: 32px;
+  margin-top: 64px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.principle {
+  padding-top: 16px;
+  border-top: 3px solid var(--color-night);
+}
+
+.principle strong {
+  display: block;
+  font-size: 18px;
+}
+
+.brand__lead {
+  max-width: 560px;
+  margin-top: 20px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--color-muted);
+}
+
+.palette {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 32px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.brand .grid {
+  --min: 260px;
+}
+
+.lookbook .grid {
+  --min: 280px;
+}
+
+.cta {
+  padding-block: 112px;
+  border-bottom: 0;
+  text-align: center;
+}
+
+.cta__title {
+  max-width: 1000px;
+  margin: 20px auto 0;
+  font: 400 clamp(48px, 10vw, 150px) / 0.92 var(--font-display);
+  text-transform: uppercase;
+}
+
+.cta__text {
+  max-width: 520px;
+  margin: 28px auto 0;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.cta .btn {
+  margin-top: 40px;
+}
+
+.site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 28px var(--space-page);
+  border-top: var(--border);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+@media (max-width: 640px) {
+  .hero__badge {
+    width: 110px;
+    top: 72px;
+  }
+
+  .hero__badge-mark {
+    width: 40px;
+    height: 36px;
+  }
+}
