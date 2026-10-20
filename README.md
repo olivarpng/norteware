@@ -1,2 +1,2 @@
 # norteware
-norteware landing page
+norteware sem mapa, só norte
