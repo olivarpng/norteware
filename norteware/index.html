@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/sections.css">
   <link rel="stylesheet" href="css/animations.css">
-  <script src="js/main.js" defer></script>
+  <script type="module" src="js/main.js"></script>
 </head>
 <body>
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -89,42 +89,12 @@
 
     <section class="section" id="drop" aria-labelledby="drop-title">
       <div class="section__head">
-        <h2 class="section__title" id="drop-title" data-reveal>O Drop<br><span class="outline">01</span></h2>
-        <p class="section__note" data-reveal>Edição limitada. Quando acabar, acabou. Chama no direct pra garantir a sua.</p>
+        <h2 class="section__title" id="drop-title" data-reveal>O Drop<br><span class="outline" id="drop-edition">01</span></h2>
+        <p class="section__note" id="drop-note" data-reveal>Edição limitada. Quando acabar, acabou. Chama no direct pra garantir a sua.</p>
       </div>
 
-      <div class="grid">
-        <article class="card" data-reveal>
-          <div class="card__media placeholder"><span class="tag">NOVO</span><span>[FOTO DA PEÇA]</span></div>
-          <div class="card__body">
-            <h3 class="card__title">01 — [Camiseta]</h3>
-            <div class="card__footer"><span class="card__price">[PREÇO]</span><a class="link" href="https://www.instagram.com/nortewearbr/" target="_blank" rel="noopener">Quero →</a></div>
-          </div>
-        </article>
-
-        <article class="card" data-reveal>
-          <div class="card__media placeholder"><span class="tag">LIMITADO</span><span>[FOTO DA PEÇA]</span></div>
-          <div class="card__body">
-            <h3 class="card__title">02 — [Moletom]</h3>
-            <div class="card__footer"><span class="card__price">[PREÇO]</span><a class="link" href="https://www.instagram.com/nortewearbr/" target="_blank" rel="noopener">Quero →</a></div>
-          </div>
-        </article>
-
-        <article class="card" data-reveal>
-          <div class="card__media placeholder"><span class="tag tag--light">ÚLTIMAS</span><span>[FOTO DA PEÇA]</span></div>
-          <div class="card__body">
-            <h3 class="card__title">03 — [Boné]</h3>
-            <div class="card__footer"><span class="card__price">[PREÇO]</span><a class="link" href="https://www.instagram.com/nortewearbr/" target="_blank" rel="noopener">Quero →</a></div>
-          </div>
-        </article>
-
-        <article class="card" data-reveal>
-          <div class="card__media placeholder"><span class="tag">NOVO</span><span>[FOTO DA PEÇA]</span></div>
-          <div class="card__body">
-            <h3 class="card__title">04 — [Calça]</h3>
-            <div class="card__footer"><span class="card__price">[PREÇO]</span><a class="link" href="https://www.instagram.com/nortewearbr/" target="_blank" rel="noopener">Quero →</a></div>
-          </div>
-        </article>
+      <div class="grid" id="drop-grid" aria-live="polite">
+        <p class="empty">Carregando o drop…</p>
       </div>
     </section>
 

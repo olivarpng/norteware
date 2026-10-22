@@ -288,3 +288,50 @@
   transform-origin: 0 50%;
   transform: scaleX(var(--progress, 0));
 }
+
+.card__media {
+  position: relative;
+}
+
+.card__media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card__media .tag {
+  position: relative;
+  z-index: 1;
+}
+
+.sizes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.size {
+  min-width: 36px;
+  padding: 4px 8px;
+  border: var(--border);
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.size--out {
+  opacity: 0.35;
+  text-decoration: line-through;
+}
+
+.link--off {
+  color: var(--color-muted);
+}
+
+.empty {
+  grid-column: 1 / -1;
+  color: var(--color-muted);
+}

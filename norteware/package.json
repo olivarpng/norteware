@@ -1,0 +1,9 @@
+{
+  "name": "norteware",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "cd .. && python3 -m http.server 8080",
+    "test": "node --test"
+  }
+}

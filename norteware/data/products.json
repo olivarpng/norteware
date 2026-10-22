@@ -1,0 +1,13 @@
+{
+  "drop": {
+    "edition": "01",
+    "note": "Edição limitada. Quando acabar, acabou. Chama no direct pra garantir a sua.",
+    "status": "open"
+  },
+  "products": [
+    { "id": "camiseta", "name": "Camiseta", "price": null, "tag": "NOVO", "image": "", "active": true, "sizes": { "P": 5, "M": 5, "G": 5, "GG": 5 } },
+    { "id": "moletom", "name": "Moletom", "price": null, "tag": "LIMITADO", "image": "", "active": true, "sizes": { "P": 5, "M": 5, "G": 5, "GG": 5 } },
+    { "id": "bone", "name": "Boné", "price": null, "tag": "ÚLTIMAS", "image": "", "active": true, "sizes": { "P": 0, "M": 0, "G": 0, "GG": 0 } },
+    { "id": "calca", "name": "Calça", "price": null, "tag": "NOVO", "image": "", "active": true, "sizes": { "P": 5, "M": 5, "G": 5, "GG": 5 } }
+  ]
+}

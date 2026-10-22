@@ -1,31 +1,51 @@
 # NORTE WEAR BR
 
-Landing page streetwear da loja [@nortewearbr](https://www.instagram.com/nortewearbr/). HTML, CSS e um pouco de JS puro, sem build e sem dependências.
+Landing page streetwear da loja [@nortewearbr](https://www.instagram.com/nortewearbr/), com um painel para o dono atualizar drops, preços, tamanhos e estoque sem mexer em código. HTML, CSS e JS puro, sem build.
 
 ## Estrutura
 
 ```
-index.html          marcação semântica
-css/
-  tokens.css        cores, fontes, espaçamentos (variáveis)
-  base.css          reset, tipografia e utilitários
-  components.css    botões, cards, logo, letreiros, tiles
-  sections.css      layout de cada seção
-  animations.css    keyframes, entrada e animações de rolagem
-js/main.js          fallback de rolagem para navegadores sem animation-timeline
-assets/             favicon, símbolo da marca e textura de grão
+norteware/
+  index.html            marcação semântica
+  data/products.json    catálogo: drop atual, peças, preços e estoque por tamanho
+  css/                  tokens, base, components, sections, animations
+  js/
+    main.js             ponto de entrada do site
+    shared/             regras e utilitários usados pelo site e pelo painel
+    site/               renderização do catálogo e fallback de rolagem
+  admin/                painel de gestão (index.html, admin.css, js/)
+  assets/               favicon, símbolo da marca, grão e fotos das peças
+  tests/                testes automatizados (node --test)
 ```
 
-## Rodar
+## Como o painel funciona
 
-Abra o `index.html` no navegador.
+1. O site lê `data/products.json` e desenha os cards.
+2. O painel (`/admin/`) edita esse mesmo arquivo pela API do GitHub. Cada "Salvar" vira um commit.
+3. O GitHub Pages republica o site em cerca de 1 minuto.
 
-## Publicar
+Não há servidor nem banco de dados. Quem controla o acesso é o GitHub: só quem tem a chave de acesso consegue salvar.
 
-GitHub Pages: Settings → Pages → Source: `main` / `(root)`.
+### Chave de acesso do dono
+
+1. Abra github.com/settings/personal-access-tokens/new.
+2. Em **Repository access**, escolha só o repositório `norteware`.
+3. Em **Permissions**, marque **Contents: Read and write**.
+4. Defina a validade, gere e cole a chave na tela de entrada do painel.
+
+A chave fica só no navegador de quem entrou. Marque "Lembrar neste aparelho" apenas em um aparelho seu.
+
+## Rodar local
+
+```
+npm start        # servidor em http://localhost:8080/norteware/
+npm test         # testes
+```
+
+O site precisa de um servidor local porque lê o `products.json`.
 
 ## Personalizar
 
-- **Cores e fontes:** edite `css/tokens.css`.
-- **Fotos, preços e nomes das peças:** troque os textos entre colchetes (`[FOTO DA PEÇA]`, `[PREÇO]`) em `index.html`.
-- **Animações:** `css/animations.css`. Quem ativa "reduzir movimento" no sistema vê a página sem animações.
+- **Cores e fontes:** `css/tokens.css`.
+- **Endereço do repositório e pastas usadas pelo painel:** `admin/js/config.js` (ajuste `siteRoot` se mover o site para a raiz).
+- **Tamanhos e selos disponíveis:** `js/shared/schema.js`.
