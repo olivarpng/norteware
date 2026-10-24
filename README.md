@@ -26,12 +26,6 @@ norteware/
 
 Não há servidor nem banco de dados. Quem controla o acesso é o GitHub: só quem tem a chave de acesso consegue salvar.
 
-### Chave de acesso do dono
-
-1. Abra github.com/settings/personal-access-tokens/new.
-2. Em **Repository access**, escolha só o repositório `norteware`.
-3. Em **Permissions**, marque **Contents: Read and write**.
-4. Defina a validade, gere e cole a chave na tela de entrada do painel.
 
 A chave fica só no navegador de quem entrou. Marque "Lembrar neste aparelho" apenas em um aparelho seu.
 
