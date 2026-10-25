@@ -45,14 +45,6 @@
   margin-top: 36px;
 }
 
-.hero__logo {
-  width: 100%;
-  aspect-ratio: 1;
-  border: var(--border);
-  border-radius: 28px;
-  object-fit: cover;
-}
-
 .drop__head {
   display: flex;
   flex-wrap: wrap;
@@ -112,10 +104,10 @@
     grid-template-columns: 1fr;
   }
 
-  .hero__logo {
-    max-width: 280px;
-    order: -1;
+  .carousel {
+    max-width: 520px;
   }
+
 }
 
 @media (max-width: 520px) {
