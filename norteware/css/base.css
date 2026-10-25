@@ -6,6 +6,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 72px;
 }
 
 body {
@@ -13,17 +14,8 @@ body {
   overflow-x: hidden;
   background: var(--color-night);
   color: var(--color-lavender);
-  font-family: var(--font-mono);
-}
-
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 40;
-  opacity: 0.09;
-  pointer-events: none;
-  background-image: url("../assets/grain.svg");
+  font: 400 16px / 1.6 var(--font-body);
+  -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, p, figure, ul {
@@ -40,12 +32,13 @@ a {
   text-decoration: none;
 }
 
-svg {
+img {
   display: block;
+  max-width: 100%;
 }
 
 :focus-visible {
-  outline: 3px solid var(--color-accent);
+  outline: 2px solid var(--color-accent);
   outline-offset: 3px;
 }
 
@@ -55,52 +48,57 @@ svg {
   left: 12px;
   z-index: 70;
   padding: 10px 16px;
-  background: var(--color-accent);
-  color: var(--color-night);
-  font-weight: 700;
+  border-radius: 8px;
+  background: var(--color-brand);
+  color: #fff;
+  font-weight: 600;
 }
 
 .skip-link:focus {
   top: 12px;
 }
 
+.container {
+  width: min(100%, 1200px);
+  margin-inline: auto;
+  padding-inline: var(--space-page);
+}
+
 .section {
-  padding: var(--space-section) var(--space-page);
-  border-bottom: var(--border);
+  padding-block: var(--space-section);
 }
 
 .section__title {
-  font: 400 var(--text-title) / 0.95 var(--font-display);
+  font: 400 var(--text-title) / 1 var(--font-display);
+  letter-spacing: 0.01em;
   text-transform: uppercase;
 }
 
-.eyebrow {
-  font-size: 13px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+.section__note {
+  max-width: 40ch;
   color: var(--color-muted);
+}
+
+.eyebrow {
+  margin-bottom: 12px;
+  color: var(--color-accent);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
 .grid {
   display: grid;
   gap: 24px;
   margin-top: 48px;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--min, 250px)), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--min, 240px)), 1fr));
 }
 
 .accent {
   color: var(--color-accent);
 }
 
-.outline {
-  color: transparent;
-  -webkit-text-stroke: 2px var(--color-accent);
-}
-
 .placeholder {
-  background: repeating-linear-gradient(
-    var(--angle, 45deg),
-    var(--color-asphalt) 0 14px,
-    var(--color-stripe) 14px 28px
-  );
+  background: linear-gradient(160deg, #1a1424, #0d0a12);
 }

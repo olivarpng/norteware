@@ -33,7 +33,7 @@ function productCard(product, dropStatus) {
   return h("article", { class: "card", "data-reveal": true },
     h("div", { class: `card__media${product.image ? "" : " placeholder"}` },
       tag && h("span", { class: `tag${tag === "NOVO" || tag === "LIMITADO" ? "" : " tag--light"}` }, tag),
-      product.image ? h("img", { src: product.image, alt: product.name, loading: "lazy" }) : h("span", {}, "[FOTO DA PEÇA]")),
+      product.image ? h("img", { src: product.image, alt: product.name, loading: "lazy" }) : h("span", { class: "card__hint" }, "Foto em breve")),
     h("div", { class: "card__body" },
       h("h3", { class: "card__title" }, product.name),
       h("ul", { class: "sizes", "aria-label": "Tamanhos" },

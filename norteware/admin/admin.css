@@ -44,8 +44,9 @@
 }
 
 .btn--primary {
-  background: var(--color-accent);
-  color: var(--color-night);
+  border-color: transparent;
+  background: var(--color-brand);
+  color: #fff;
 }
 
 .btn--small {

@@ -1,14 +1,8 @@
-const root = document.documentElement;
-
 export function initScrollFallback() {
   if (window.CSS?.supports?.("animation-timeline: view()")) return;
 
-  root.classList.add("reveal-fallback");
-  revealOnView();
-  trackScrollProgress();
-}
+  document.documentElement.classList.add("reveal-fallback");
 
-function revealOnView() {
   const observer = new IntersectionObserver(
     (entries) => {
       for (const entry of entries) {
@@ -21,14 +15,4 @@ function revealOnView() {
   );
 
   document.querySelectorAll("[data-reveal]").forEach((el) => observer.observe(el));
-}
-
-function trackScrollProgress() {
-  const update = () => {
-    const max = root.scrollHeight - window.innerHeight;
-    root.style.setProperty("--progress", max > 0 ? window.scrollY / max : 0);
-  };
-
-  window.addEventListener("scroll", update, { passive: true });
-  update();
 }

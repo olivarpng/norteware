@@ -14,7 +14,7 @@ norteware/
     shared/             regras e utilitários usados pelo site e pelo painel
     site/               renderização do catálogo e fallback de rolagem
   admin/                painel de gestão (index.html, admin.css, js/)
-  assets/               favicon, símbolo da marca, grão e fotos das peças
+  assets/               logo, favicon e fotos das peças
   tests/                testes automatizados (node --test)
 ```
 
