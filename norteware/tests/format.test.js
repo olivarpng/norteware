@@ -18,3 +18,10 @@ test("formatPrice mostra Consultar sem preço e reais com preço", () => {
   assert.equal(formatPrice(null), "Consultar");
   assert.match(formatPrice(89.9).replace(/\s/g, " "), /^R\$ 89,90$/);
 });
+
+test("formatPhone mostra o número no formato brasileiro", async () => {
+  const { formatPhone } = await import("../js/shared/format.js");
+  assert.equal(formatPhone("5517991427518"), "+55 17 99142-7518");
+  assert.equal(formatPhone("551733334444"), "+55 17 3333-4444");
+  assert.equal(formatPhone("123"), "123");
+});

@@ -11,3 +11,8 @@ export function parsePrice(text) {
   const value = Number(normalized);
   return Number.isFinite(value) && value >= 0 ? Math.round(value * 100) / 100 : null;
 }
+
+export function formatPhone(digits) {
+  const match = /^55(\d{2})(\d{4,5})(\d{4})$/.exec(digits);
+  return match ? `+55 ${match[1]} ${match[2]}-${match[3]}` : digits;
+}

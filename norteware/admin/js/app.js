@@ -1,5 +1,5 @@
 import { h } from "../../js/shared/dom.js";
-import { createProduct, normalizeCatalog, validateCatalog } from "../../js/shared/schema.js";
+import { createProduct, normalizeCatalog, slugify, validateCatalog } from "../../js/shared/schema.js";
 import { CONFIG, repoPath } from "./config.js";
 import { createGitHubClient } from "./github.js";
 import { resizeImage } from "./image.js";
@@ -25,7 +25,7 @@ const actions = {
     const product = catalog.products[index];
     await run("Enviando foto…", async () => {
       const { base64, previewUrl, extension } = await resizeImage(file);
-      const webPath = `${CONFIG.imageDir}/${product.id}-${Date.now()}.${extension}`;
+      const webPath = `${CONFIG.imageDir}/${slugify(product.name) || product.id}-${Date.now()}.${extension}`;
       await client.uploadFile(repoPath(webPath), base64, `Adiciona foto de ${product.name}`);
       update((c) => { c.products[index].image = webPath; });
       store.set({ previews: { ...store.get().previews, [webPath]: previewUrl } });
