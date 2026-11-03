@@ -5,9 +5,33 @@
     "status": "open"
   },
   "products": [
-    { "id": "camiseta", "name": "Camiseta", "price": null, "tag": "NOVO", "image": "", "active": true, "sizes": { "P": 5, "M": 5, "G": 5, "GG": 5 } },
-    { "id": "moletom", "name": "Moletom", "price": null, "tag": "LIMITADO", "image": "", "active": true, "sizes": { "P": 5, "M": 5, "G": 5, "GG": 5 } },
-    { "id": "bone", "name": "Boné", "price": null, "tag": "ÚLTIMAS", "image": "", "active": true, "sizes": { "P": 0, "M": 0, "G": 0, "GG": 0 } },
-    { "id": "calca", "name": "Calça", "price": null, "tag": "NOVO", "image": "", "active": true, "sizes": { "P": 5, "M": 5, "G": 5, "GG": 5 } }
+    {
+      "id": "camiseta",
+      "name": "TENIS TESTE VANS",
+      "price": 123.6,
+      "tag": "NOVO",
+      "image": "assets/products/camiseta-1793672617494.webp",
+      "active": true,
+      "sizes": {
+        "P": 10,
+        "M": 5,
+        "G": 5,
+        "GG": 5
+      }
+    },
+    {
+      "id": "moletom",
+      "name": "VANS",
+      "price": 200,
+      "tag": "LIMITADO",
+      "image": "assets/products/moletom-1793672519444.webp",
+      "active": true,
+      "sizes": {
+        "P": 5,
+        "M": 5,
+        "G": 0,
+        "GG": 0
+      }
+    }
   ]
 }
