@@ -45,3 +45,16 @@ test("erros do GitHub viram mensagens em português", async () => {
   globalThis.fetch = () => reply({}, 409);
   await assert.rejects(createGitHubClient(config).writeJson("a.json", {}, "s", "m"), /mudou enquanto/);
 });
+
+test("canWrite barra quem não tem permissão de escrita no repositório", async () => {
+  const client = createGitHubClient(config);
+
+  globalThis.fetch = () => reply({ permissions: { push: false } });
+  assert.equal(await client.canWrite(), false);
+
+  globalThis.fetch = () => reply({ permissions: { push: true } });
+  assert.equal(await client.canWrite(), true);
+
+  globalThis.fetch = () => reply({});
+  assert.equal(await client.canWrite(), true);
+});

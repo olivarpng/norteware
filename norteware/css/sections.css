@@ -80,7 +80,8 @@
   color: var(--color-muted);
 }
 
-.cta .btn {
+.cta .btn,
+.cta .btn-insta {
   margin-top: 36px;
 }
 

@@ -1,4 +1,9 @@
-export async function resizeToJpeg(file, maxSize = 1200, quality = 0.85) {
+const FORMATS = [
+  { type: "image/webp", extension: "webp" },
+  { type: "image/jpeg", extension: "jpg" },
+];
+
+export async function resizeImage(file, maxSize = 1200, quality = 0.82) {
   const bitmap = await createImageBitmap(file);
   const scale = Math.min(1, maxSize / Math.max(bitmap.width, bitmap.height));
   const canvas = document.createElement("canvas");
@@ -6,8 +11,13 @@ export async function resizeToJpeg(file, maxSize = 1200, quality = 0.85) {
   canvas.height = Math.round(bitmap.height * scale);
   canvas.getContext("2d").drawImage(bitmap, 0, 0, canvas.width, canvas.height);
 
-  const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", quality));
-  return { base64: await toBase64(blob), previewUrl: URL.createObjectURL(blob) };
+  for (const { type, extension } of FORMATS) {
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, type, quality));
+    if (blob?.type !== type) continue;
+    return { extension, base64: await toBase64(blob), previewUrl: URL.createObjectURL(blob) };
+  }
+
+  throw new Error("Não foi possível converter a foto.");
 }
 
 const toBase64 = (blob) =>

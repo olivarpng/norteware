@@ -54,6 +54,11 @@ export function createGitHubClient({ owner, repo, branch, token }) {
     request(endpoint(path), { method: "PUT", body: JSON.stringify({ ...body, branch }) });
 
   return {
+    async canWrite() {
+      const info = await request(`${API}/repos/${owner}/${repo}`);
+      return info.permissions?.push !== false;
+    },
+
     async readJson(path) {
       const file = await request(`${endpoint(path)}?ref=${encodeURIComponent(branch)}`);
       return { data: JSON.parse(decodeBase64(file.content)), sha: file.sha };

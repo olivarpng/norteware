@@ -2,7 +2,7 @@ import { h } from "../../js/shared/dom.js";
 import { createProduct, normalizeCatalog, validateCatalog } from "../../js/shared/schema.js";
 import { CONFIG, repoPath } from "./config.js";
 import { createGitHubClient } from "./github.js";
-import { resizeToJpeg } from "./image.js";
+import { resizeImage } from "./image.js";
 import { clearSession, loadSession, saveSession } from "./session.js";
 import { createStore } from "./store.js";
 import { renderEditor } from "./ui/editor.js";
@@ -24,8 +24,8 @@ const actions = {
     const { client, catalog } = store.get();
     const product = catalog.products[index];
     await run("Enviando foto…", async () => {
-      const { base64, previewUrl } = await resizeToJpeg(file);
-      const webPath = `${CONFIG.imageDir}/${product.id}-${Date.now()}.jpg`;
+      const { base64, previewUrl, extension } = await resizeImage(file);
+      const webPath = `${CONFIG.imageDir}/${product.id}-${Date.now()}.${extension}`;
       await client.uploadFile(repoPath(webPath), base64, `Adiciona foto de ${product.name}`);
       update((c) => { c.products[index].image = webPath; });
       store.set({ previews: { ...store.get().previews, [webPath]: previewUrl } });
@@ -79,6 +79,7 @@ async function connect(token, remember) {
   store.set({ busy: true, message: "" });
   const client = createGitHubClient({ ...CONFIG, token });
   try {
+    if (!(await client.canWrite())) throw new Error("Esta conta não tem permissão para editar este site.");
     const { data, sha } = await client.readJson(repoPath(CONFIG.dataFile));
     saveSession(token, remember);
     store.set({ view: "editor", client, sha, catalog: normalizeCatalog(data), dirty: false, busy: false, message: "" });
