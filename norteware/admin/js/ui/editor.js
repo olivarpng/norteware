@@ -1,6 +1,6 @@
 import { h } from "../../../js/shared/dom.js";
 import { formatPhone, parsePrice } from "../../../js/shared/format.js";
-import { addSize, DROP_STATUS, digitsOnly, PRODUCT_TYPES, removeSize, setProductType, TAGS, totalStock } from "../../../js/shared/schema.js";
+import { addSize, categoryResetsSizes, CATEGORIES, DROP_STATUS, digitsOnly, PRODUCT_TYPES, removeSize, setProductCategory, setProductType, TAGS, totalStock } from "../../../js/shared/schema.js";
 import { field } from "./field.js";
 
 const button = (label, onClick, extra = "") => h("button", { class: `btn btn--small ${extra}`.trim(), type: "button", onClick }, label);
@@ -50,6 +50,15 @@ function productItem(product, index, state, { edit, upload, move, remove }) {
   const set = (apply) => (event) => edit((catalog) => apply(catalog.products[index], event.target));
   const preview = state.previews[product.image] ?? (product.image ? `../${product.image}` : "");
 
+  const changeCategory = (event) => {
+    const next = event.target.value;
+    if (categoryResetsSizes(product, next) && totalStock(product) > 0 && !confirm("Essa categoria usa outra lista de tamanhos e vai apagar o estoque atual desta peça. Continuar?")) {
+      event.target.value = product.category;
+      return;
+    }
+    edit((catalog) => setProductCategory(catalog.products[index], next), { render: true });
+  };
+
   const changeType = (event) => {
     const next = event.target.value;
     if (totalStock(product) > 0 && !confirm("Trocar o tipo apaga os tamanhos e o estoque atuais desta peça. Continuar?")) {
@@ -65,7 +74,9 @@ function productItem(product, index, state, { edit, upload, move, remove }) {
     preview ? h("img", { class: "thumb", src: preview, alt: "" }) : h("div", { class: "thumb placeholder" }),
     h("div", { class: "fields" },
       field("Nome", h("input", { class: "input", value: product.name, onInput: set((p, el) => { p.name = el.value; }) })),
-      field("Tipo", h("select", { class: "input", onChange: changeType },
+      field("Categoria (aba do site)", h("select", { class: "input", onChange: changeCategory },
+        Object.entries(CATEGORIES).map(([value, { label }]) => option(value, label, value === product.category)))),
+      field("Tamanhos", h("select", { class: "input", onChange: changeType },
         Object.entries(PRODUCT_TYPES).map(([value, { label }]) => option(value, label, value === product.type)))),
       field("Preço (R$)", h("input", { class: "input", inputmode: "decimal", placeholder: "0,00", value: product.price == null ? "" : String(product.price).replace(".", ","), onInput: set((p, el) => { p.price = parsePrice(el.value); }) })),
       field("Selo", h("select", { class: "input", onChange: set((p, el) => { p.tag = el.value; }) },

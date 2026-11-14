@@ -7,6 +7,14 @@ export const PRODUCT_TYPES = {
   unico: { label: "Único (sem tamanho)", sizes: [NO_SIZE] },
 };
 
+export const CATEGORIES = {
+  calcados: { label: "Calçados", type: "calcado" },
+  "calcas-shorts": { label: "Calças / Shorts", type: "roupa" },
+  camisetas: { label: "Camisetas", type: "roupa" },
+  moletom: { label: "Moletom", type: "roupa" },
+  outros: { label: "Outros", type: "unico" },
+};
+
 export const TAGS = ["", "NOVO", "LIMITADO", "ÚLTIMAS"];
 export const DROP_STATUS = { open: "Aberto", soon: "Em breve", closed: "Encerrado" };
 
@@ -42,11 +50,31 @@ export function sortSizes(labels) {
   });
 }
 
+const CATEGORY_HINTS = [
+  ["calcados", /tenis|sapato|chinelo|sandalia|bota/],
+  ["calcas-shorts", /calca|short|bermuda|jeans|cargo/],
+  ["moletom", /moletom|casaco|jaqueta/],
+  ["camisetas", /camiseta|camisa|blusa|regata/],
+];
+
+function inferCategory(name, type) {
+  if (type === "calcado") return "calcados";
+  const plain = name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  return CATEGORY_HINTS.find(([, pattern]) => pattern.test(plain))?.[0] ?? "outros";
+}
+
 export const sizesFor = (type) => Object.fromEntries(PRODUCT_TYPES[type].sizes.map((size) => [size, 0]));
 
 export function setProductType(product, type) {
   product.type = type;
   product.sizes = sizesFor(type);
+}
+
+export const categoryResetsSizes = (product, category) => CATEGORIES[category].type !== product.type;
+
+export function setProductCategory(product, category) {
+  if (categoryResetsSizes(product, category)) setProductType(product, CATEGORIES[category].type);
+  product.category = category;
 }
 
 export function addSize(product, label) {
@@ -77,8 +105,8 @@ export function uniqueId(base, products) {
   return id;
 }
 
-export function createProduct(products, name = "Nova peça", type = "roupa") {
-  return normalizeProduct({ id: uniqueId(name, products), name, type });
+export function createProduct(products, name = "Nova peça", category = "camisetas") {
+  return normalizeProduct({ id: uniqueId(name, products), name, category, type: CATEGORIES[category].type });
 }
 
 function normalizeProduct(raw = {}) {
@@ -92,10 +120,13 @@ function normalizeProduct(raw = {}) {
     ? Object.fromEntries(sortSizes(stockBySize.keys()).map((label) => [label, stockBySize.get(label)]))
     : sizesFor(type);
 
+  const name = text(raw.name);
+
   return {
     id: text(raw.id),
-    name: text(raw.name),
+    name,
     type,
+    category: Object.hasOwn(CATEGORIES, raw.category) ? raw.category : inferCategory(name, type),
     price: typeof raw.price === "number" && raw.price >= 0 ? raw.price : null,
     tag: TAGS.includes(raw.tag) ? raw.tag : "",
     image: text(raw.image),

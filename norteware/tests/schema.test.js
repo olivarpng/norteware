@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
-  addSize, availability, createProduct, DEFAULT_WHATSAPP, isSoldOut, normalizeCatalog, removeSize,
-  setProductType, slugify, sortSizes, uniqueId, validateCatalog,
+  addSize, availability, categoryResetsSizes, createProduct, DEFAULT_WHATSAPP, isSoldOut, normalizeCatalog, removeSize,
+  setProductCategory, setProductType, slugify, sortSizes, uniqueId, validateCatalog,
 } from "../js/shared/schema.js";
 
 test("normalizeCatalog corrige dados quebrados", () => {
@@ -86,4 +86,42 @@ test("validateCatalog acusa nome vazio, código repetido e WhatsApp inválido", 
   const errors = validateCatalog({ store: { whatsapp: "1" }, products: [{ id: "a", name: "" }, { id: "a", name: "B" }] });
   assert.equal(errors.length, 3);
   assert.deepEqual(validateCatalog({ store: { whatsapp: DEFAULT_WHATSAPP }, products: [] }), []);
+});
+
+test("categoria vem do cadastro e, se faltar, é deduzida do tipo e do nome", () => {
+  const { products } = normalizeCatalog({
+    products: [
+      { name: "Qualquer coisa", category: "moletom" },
+      { name: "Tênis Vans", type: "roupa" },
+      { name: "Vans Old Skool", type: "calcado" },
+      { name: "Calça Cargo" },
+      { name: "Short Jeans" },
+      { name: "Camiseta Preta" },
+      { name: "Moletom Canguru" },
+      { name: "Boné", type: "unico" },
+      { name: "Cartão presente", category: "invalida" },
+    ],
+  });
+  assert.deepEqual(products.map((p) => p.category), ["moletom", "calcados", "calcados", "calcas-shorts", "calcas-shorts", "camisetas", "moletom", "outros", "outros"]);
+});
+
+test("trocar de categoria só recomeça os tamanhos se a lista mudar", () => {
+  const product = createProduct([], "Camiseta");
+  product.sizes.M = 4;
+
+  assert.equal(categoryResetsSizes(product, "moletom"), false);
+  setProductCategory(product, "moletom");
+  assert.equal(product.category, "moletom");
+  assert.equal(product.sizes.M, 4);
+
+  assert.equal(categoryResetsSizes(product, "calcados"), true);
+  setProductCategory(product, "calcados");
+  assert.equal(product.type, "calcado");
+  assert.equal(product.sizes["41"], 0);
+});
+
+test("peça nova nasce em Camisetas com tamanhos de roupa", () => {
+  const product = createProduct([], "Nova peça");
+  assert.equal(product.category, "camisetas");
+  assert.deepEqual(Object.keys(product.sizes), ["P", "M", "G", "GG"]);
 });

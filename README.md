@@ -38,6 +38,10 @@ Cada peça tem um **tipo**, que define a lista de tamanhos:
 
 No painel dá para remover tamanhos que a loja não trabalha e adicionar outros (XG, 45, 42,5). Trocar o tipo de uma peça recomeça a lista de tamanhos e o estoque dela.
 
+## Categorias (abas)
+
+O drop é dividido em abas: **Todos, Calçados, Calças / Shorts, Camisetas e Moletom**. Cada peça tem uma **categoria** no painel, e é ela que decide em qual aba a peça aparece. Escolher uma categoria já usa a lista de tamanhos certa (calçado usa numeração, as demais usam P a GG). A aba **Outros** só aparece se existir alguma peça nessa categoria. Peças antigas sem categoria são encaixadas pelo nome (por exemplo, "Tênis..." vai para Calçados) até serem salvas de novo no painel.
+
 ## Carrinho e pedidos
 
 O cliente escolhe o tamanho no card, clica em **Adicionar** e envia o pedido pelo WhatsApp, já com a mensagem pronta (nome, itens, total e, se quiser, "outros itens ou dúvidas"). O número que recebe os pedidos é editado no painel, no bloco **Loja**.

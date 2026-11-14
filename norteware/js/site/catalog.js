@@ -1,9 +1,10 @@
 import { h } from "../shared/dom.js";
 import { formatPrice } from "../shared/format.js";
-import { availability, isSoldOut, NO_SIZE, normalizeCatalog } from "../shared/schema.js";
+import { availability, CATEGORIES, isSoldOut, NO_SIZE, normalizeCatalog } from "../shared/schema.js";
 
 const DATA_URL = "data/products.json";
 const FLASH_MS = 1500;
+const ALL = "todos";
 
 export async function loadCatalog() {
   try {
@@ -17,6 +18,7 @@ export async function loadCatalog() {
 
 export function renderCatalog(catalog, { onAdd } = {}) {
   const grid = document.querySelector("#drop-grid");
+  const tabs = document.querySelector("#drop-tabs");
   if (!grid) return;
 
   if (!catalog) {
@@ -28,7 +30,41 @@ export function renderCatalog(catalog, { onAdd } = {}) {
   document.querySelector("#drop-note").textContent = catalog.drop.note;
 
   const visible = catalog.products.filter((product) => product.active);
-  grid.replaceChildren(...(visible.length ? visible.map((product) => productCard(product, catalog.drop.status, onAdd)) : [message("Novo drop em breve.")]));
+  if (!visible.length) {
+    grid.replaceChildren(message("Novo drop em breve."));
+    return;
+  }
+
+  const categories = [[ALL, "Todos"], ...Object.entries(CATEGORIES).map(([key, { label }]) => [key, label])]
+    .filter(([key]) => key !== "outros" || visible.some((product) => product.category === "outros"));
+  const buttons = categories.map(([key, label]) =>
+    h("button", { class: "tab", type: "button", role: "tab", id: `tab-${key}`, "aria-controls": "drop-grid", onClick: () => select(key) }, label));
+
+  function select(key, { focus = false } = {}) {
+    buttons.forEach((button, index) => {
+      const active = categories[index][0] === key;
+      button.setAttribute("aria-selected", String(active));
+      button.tabIndex = active ? 0 : -1;
+      if (active && focus) button.focus();
+    });
+
+    const items = visible.filter((product) => key === ALL || product.category === key);
+    const label = categories.find(([id]) => id === key)[1];
+    grid.setAttribute("aria-labelledby", `tab-${key}`);
+    grid.replaceChildren(...(items.length ? items.map((product) => productCard(product, catalog.drop.status, onAdd)) : [message(`Ainda não temos peças em ${label}. Volta em breve!`)]));
+  }
+
+  tabs.addEventListener("keydown", (event) => {
+    const current = buttons.findIndex((button) => button.getAttribute("aria-selected") === "true");
+    const moves = { ArrowRight: current + 1, ArrowLeft: current - 1, Home: 0, End: buttons.length - 1 };
+    if (!(event.key in moves)) return;
+    event.preventDefault();
+    select(categories[(moves[event.key] + buttons.length) % buttons.length][0], { focus: true });
+  });
+
+  tabs.replaceChildren(...buttons);
+  tabs.hidden = false;
+  select(ALL);
 }
 
 const message = (text) => h("p", { class: "empty" }, text);
@@ -69,7 +105,7 @@ function productCard(product, dropStatus, onAdd) {
     setTimeout(() => (addButton.textContent = label), FLASH_MS);
   }
 
-  return h("article", { class: "card", "data-reveal": true },
+  return h("article", { class: "card" },
     h("div", { class: `card__media${product.image ? "" : " placeholder"}` },
       tag && h("span", { class: `tag${tag === "NOVO" || tag === "LIMITADO" ? "" : " tag--light"}` }, tag),
       product.image ? h("img", { src: product.image, alt: product.name, loading: "lazy" }) : h("span", { class: "card__hint" }, "Foto em breve")),
