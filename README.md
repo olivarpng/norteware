@@ -38,6 +38,10 @@ Cada peça tem um **tipo**, que define a lista de tamanhos:
 
 No painel dá para remover tamanhos que a loja não trabalha e adicionar outros (XG, 45, 42,5). Trocar o tipo de uma peça recomeça a lista de tamanhos e o estoque dela.
 
+## Fundo de fumaça
+
+O fundo animado de fumaça roxa é desenhado na hora pelo navegador (WebGL), sem vídeo nem imagem: `js/site/smoke.js` controla o canvas e `js/site/smoke-shader.js` tem o efeito. Ele roda em resolução reduzida e a 30 quadros por segundo, pausa quando a aba fica escondida e vira uma imagem parada para quem ativa "reduzir movimento". Em aparelhos sem WebGL entra um fundo roxo estático no lugar. Para ajustar o brilho ou a velocidade, edite o final do `smoke-shader.js` (cores e intensidade) e `SPEED` em `smoke.js`.
+
 ## Categorias (abas)
 
 O drop é dividido em abas: **Todos, Calçados, Calças / Shorts, Camisetas e Moletom**. Cada peça tem uma **categoria** no painel, e é ela que decide em qual aba a peça aparece. Escolher uma categoria já usa a lista de tamanhos certa (calçado usa numeração, as demais usam P a GG). A aba **Outros** só aparece se existir alguma peça nessa categoria. Peças antigas sem categoria são encaixadas pelo nome (por exemplo, "Tênis..." vai para Calçados) até serem salvas de novo no painel.

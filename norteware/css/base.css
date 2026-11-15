@@ -102,3 +102,29 @@ img {
 .placeholder {
   background: linear-gradient(160deg, #1a1424, #0d0a12);
 }
+
+.smoke {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+html.no-smoke .smoke {
+  display: none;
+}
+
+html.no-smoke body {
+  background:
+    radial-gradient(60% 50% at 0% 0%, rgb(106 47 176 / 0.3), transparent),
+    radial-gradient(60% 50% at 100% 100%, rgb(106 47 176 / 0.25), transparent),
+    var(--color-night);
+}
+
+@media print {
+  .smoke {
+    display: none;
+  }
+}
