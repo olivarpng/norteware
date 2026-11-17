@@ -61,6 +61,10 @@ npm test         # testes
 
 O site precisa de um servidor local porque lê o `products.json`.
 
+## Ferramenta de design (Claude Code)
+
+A pasta `.claude/skills/ui-ux-pro-max/` tem o UI/UX Pro Max, uma base de consulta de estilos, paletas, fontes e boas práticas de UX que o Claude Code usa ao mexer na interface. Ela não faz parte do site e não é publicada. Para usar: abra o projeto no Claude Code (precisa de Python 3), reinicie-o e peça mudanças de visual normalmente. Para atualizar, rode `npx uipro-cli update --ai claude`; para remover, apague a pasta.
+
 ## Personalizar
 
 - **Cores e fontes:** `css/tokens.css`.
