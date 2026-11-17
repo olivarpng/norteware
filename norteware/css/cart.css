@@ -79,6 +79,11 @@
 
 .cart__close,
 .cart__remove {
+  display: grid;
+  place-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  margin-right: -13px;
   border: 0;
   background: none;
   color: var(--color-muted);
@@ -136,6 +141,7 @@
 }
 
 .cart__step {
+  position: relative;
   width: 30px;
   height: 30px;
   border: var(--border);
@@ -143,6 +149,12 @@
   background: none;
   color: inherit;
   cursor: pointer;
+}
+
+.cart__step::after {
+  content: "";
+  position: absolute;
+  inset: -7px;
 }
 
 .cart__step:disabled {
@@ -177,6 +189,8 @@
 
 .cart__clear {
   justify-self: center;
+  min-height: 44px;
+  padding-inline: 12px;
   border: 0;
   background: none;
   color: var(--color-muted);

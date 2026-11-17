@@ -25,6 +25,10 @@
   color: var(--color-muted);
 }
 
+.nav a {
+  padding-block: 11px;
+}
+
 .nav a:hover {
   color: var(--color-lavender);
 }
@@ -208,8 +212,8 @@
 .carousel__btn {
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   padding: 0;
   border: var(--border);
   border-radius: 50%;
@@ -248,7 +252,7 @@
 .carousel__dot::after {
   content: "";
   position: absolute;
-  inset: -10px -4px;
+  inset: -18px -4px;
 }
 
 .carousel__dot[aria-current="true"] {
@@ -296,6 +300,7 @@
 }
 
 .btn--small {
+  min-height: 44px;
   padding: 10px 16px;
   font-size: 13px;
 }
@@ -321,6 +326,7 @@
 }
 
 .size {
+  position: relative;
   min-width: 40px;
   padding: 6px 10px;
   border: var(--border);
@@ -330,6 +336,12 @@
   font: 600 13px var(--font-body);
   cursor: pointer;
   transition: border-color 0.2s, background 0.2s;
+}
+
+.size::after {
+  content: "";
+  position: absolute;
+  inset: -5px -2px;
 }
 
 .size:hover:not(:disabled) {

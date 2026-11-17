@@ -97,7 +97,11 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding-block: 28px;
+  padding-block: 17px;
+}
+
+.site-footer .link {
+  padding-block: 11px;
 }
 
 @media (max-width: 860px) {
