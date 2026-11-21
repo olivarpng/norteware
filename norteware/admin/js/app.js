@@ -8,6 +8,11 @@ import { createStore } from "./store.js";
 import { renderEditor } from "./ui/editor.js";
 import { renderLogin } from "./ui/login.js";
 
+if (window.top !== window.self) {
+  document.body.textContent = "Abra o painel diretamente no navegador, não dentro de outra página.";
+  throw new Error("Painel bloqueado dentro de moldura");
+}
+
 const root = document.querySelector("#app");
 const store = createStore({ view: "login", client: null, catalog: null, sha: null, dirty: false, busy: false, message: "", previews: {} });
 

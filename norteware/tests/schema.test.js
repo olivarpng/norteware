@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
-  addSize, availability, categoryResetsSizes, createProduct, DEFAULT_WHATSAPP, isSoldOut, normalizeCatalog, removeSize,
+  addSize, availability, categoryResetsSizes, createProduct, DEFAULT_CATALOG_URL, DEFAULT_WHATSAPP, isSoldOut, normalizeCatalog, removeSize,
   setProductCategory, setProductType, slugify, sortSizes, uniqueId, validateCatalog,
 } from "../js/shared/schema.js";
 
@@ -124,4 +124,39 @@ test("peça nova nasce em Camisetas com tamanhos de roupa", () => {
   const product = createProduct([], "Nova peça");
   assert.equal(product.category, "camisetas");
   assert.deepEqual(Object.keys(product.sizes), ["P", "M", "G", "GG"]);
+});
+
+test("link do catálogo: aceita só https, usa o padrão se faltar e some se vier vazio", () => {
+  const url = "https://drive.google.com/drive/folders/abc";
+  assert.equal(normalizeCatalog({ store: { catalogUrl: ` ${url} ` } }).store.catalogUrl, url);
+  assert.equal(normalizeCatalog({ store: { catalogUrl: "" } }).store.catalogUrl, "");
+  assert.equal(normalizeCatalog({}).store.catalogUrl, DEFAULT_CATALOG_URL);
+
+  for (const bad of ["javascript:alert(1)", "http://site.com", "data:text/html,x", "drive.google.com", "//evil.com", 42]) {
+    assert.equal(normalizeCatalog({ store: { catalogUrl: bad } }).store.catalogUrl, "", String(bad));
+  }
+});
+
+test("validateCatalog barra link do catálogo inválido", () => {
+  const store = { whatsapp: DEFAULT_WHATSAPP, catalogUrl: "javascript:alert(1)" };
+  assert.equal(validateCatalog({ store, products: [] }).length, 1);
+  assert.deepEqual(validateCatalog({ store: { ...store, catalogUrl: "" }, products: [] }), []);
+});
+
+test("nomes de tamanho perigosos viram dados comuns, sem mexer no protótipo", () => {
+  const raw = JSON.parse('{"products":[{"name":"X","sizes":{"__proto__":3,"constructor":2,"<b>":1}}]}');
+  const [product] = normalizeCatalog(raw).products;
+  assert.deepEqual(Object.keys(product.sizes).sort(), ["<b>", "__proto_", "construc"]);
+  assert.equal(Object.getPrototypeOf(product.sizes), Object.prototype);
+  assert.equal({}.polluted, undefined);
+});
+
+test("foto só aceita arquivos de assets/ ou endereços https", () => {
+  const image = (value) => normalizeCatalog({ products: [{ name: "X", image: value }] }).products[0].image;
+  assert.equal(image("assets/products/camiseta-1.webp"), "assets/products/camiseta-1.webp");
+  assert.equal(image("https://exemplo.com/foto.jpg"), "https://exemplo.com/foto.jpg");
+
+  for (const bad of ["javascript:alert(1)", "data:text/html,x", "assets/../../segredo", "//evil.com/x.jpg", "http://evil.com/x.jpg", "../x.jpg"]) {
+    assert.equal(image(bad), "", bad);
+  }
 });

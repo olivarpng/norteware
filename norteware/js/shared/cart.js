@@ -5,6 +5,7 @@ const findProduct = (products, id) => products.find((product) => product.id === 
 const stockOf = (product, size) => (product && Object.hasOwn(product.sizes, size) ? product.sizes[size] : 0);
 const same = (item, productId, size) => item.productId === productId && item.size === size;
 const money = (value) => formatPrice(value).replace(/\s/g, " ");
+const oneLine = (value) => value.replace(/\s+/g, " ").trim();
 
 export function addItem(items, product, size) {
   const current = items.find((item) => same(item, product.id, size));
@@ -62,8 +63,8 @@ export function totalLabel(lines) {
 }
 
 export function validateOrder({ name, lines, extra }) {
-  if (!name.trim()) return "Escreva seu nome pra gente saber com quem falar.";
-  if (!lines.length && !extra.trim()) return "Escolha um item ou conte o que você procura.";
+  if (!oneLine(name)) return "Escreva seu nome pra gente saber com quem falar.";
+  if (!lines.length && !oneLine(extra)) return "Escolha um item ou conte o que você procura.";
   return null;
 }
 
@@ -74,7 +75,7 @@ function describeLine({ product, size, qty, subtotal }) {
 }
 
 export function buildMessage({ name, lines, extra }) {
-  const parts = [`Olá! Meu nome é ${name.trim()}.`];
+  const parts = [`Olá! Meu nome é ${oneLine(name)}.`];
 
   if (lines.length) {
     parts.push(["Quero:", ...lines.map(describeLine)].join("\n"));
@@ -82,7 +83,7 @@ export function buildMessage({ name, lines, extra }) {
     if (total) parts.push(total);
   }
 
-  const note = extra.trim();
+  const note = oneLine(extra);
   if (note) parts.push(`Outros itens ou dúvidas: ${note}`);
 
   return parts.join("\n\n");

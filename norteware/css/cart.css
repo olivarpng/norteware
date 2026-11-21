@@ -196,3 +196,15 @@
   color: var(--color-muted);
   cursor: pointer;
 }
+
+.cart__catalog {
+  color: var(--color-accent);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.cart__catalog:hover {
+  text-decoration: underline;
+}

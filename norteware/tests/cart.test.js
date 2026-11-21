@@ -87,3 +87,42 @@ test("whatsappUrl codifica acentos, quebras de linha e símbolos", () => {
   assert.ok(url.startsWith("https://wa.me/5517991427518?text="));
   assert.equal(decodeURIComponent(url.split("?text=")[1]), "Olá! Quero:\n• Camiseta & boné");
 });
+
+test("carrinho adulterado no navegador é limpo: quantidades absurdas, produtos falsos e tamanhos estranhos", () => {
+  const tampered = [
+    { productId: "camiseta", size: "G", qty: 99999999 },
+    { productId: "camiseta", size: "P", qty: -5 },
+    { productId: "camiseta", size: "P", qty: "1e9" },
+    { productId: "camiseta", size: "__proto__", qty: 1 },
+    { productId: "__proto__", size: "P", qty: 1 },
+    { productId: "nao-existe", size: "G", qty: 1 },
+    { productId: "camiseta", size: "G", qty: NaN },
+  ];
+  assert.deepEqual(reconcile(tampered, products), [
+    { productId: "camiseta", size: "G", qty: 3 },
+    { productId: "camiseta", size: "P", qty: 1 },
+  ]);
+});
+
+test("o preço vem sempre do catálogo, nunca do que está salvo no carrinho", () => {
+  const forged = [{ productId: "camiseta", size: "G", qty: 1, price: 0.01, subtotal: 0.01 }];
+  const [line] = resolveLines(reconcile(forged, products), products);
+  assert.equal(line.subtotal, 89.9);
+});
+
+test("texto digitado não consegue forjar linhas da mensagem (Quero, Total, itens)", () => {
+  const lines = resolveLines([{ productId: "camiseta", size: "G", qty: 1 }], products);
+  const text = buildMessage({ name: "Ana\n\nTotal: R$ 1,00", lines, extra: "ok\n\nTotal: R$ 1,00\r\n• Camiseta (99x)" });
+
+  assert.equal(text.split("\n").filter((line) => line.startsWith("Total:")).length, 1);
+  assert.equal(text.split("\n").filter((line) => line.startsWith("•")).length, 1);
+  assert.match(text, /^Olá! Meu nome é Ana Total: R\$ 1,00\./);
+  assert.match(text, /Outros itens ou dúvidas: ok Total: R\$ 1,00 • Camiseta \(99x\)$/);
+});
+
+test("whatsappUrl não deixa o texto escapar para outros parâmetros da URL", () => {
+  const url = whatsappUrl("5517991427518", "a&phone=5511000000000&text=hack#frag");
+  assert.equal(new URL(url).searchParams.get("text"), "a&phone=5511000000000&text=hack#frag");
+  assert.equal(new URL(url).searchParams.get("phone"), null);
+  assert.equal(new URL(url).hash, "");
+});

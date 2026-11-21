@@ -29,6 +29,8 @@ export function renderCatalog(catalog, { onAdd } = {}) {
   document.querySelector("#drop-edition").textContent = catalog.drop.edition;
   document.querySelector("#drop-note").textContent = catalog.drop.note;
 
+  renderMore(catalog.store.catalogUrl);
+
   const visible = catalog.products.filter((product) => product.active);
   if (!visible.length) {
     grid.replaceChildren(message("Novo drop em breve."));
@@ -68,6 +70,20 @@ export function renderCatalog(catalog, { onAdd } = {}) {
 }
 
 const message = (text) => h("p", { class: "empty" }, text);
+
+function renderMore(url) {
+  const more = document.querySelector("#drop-more");
+  if (!more) return;
+
+  more.hidden = !url;
+  if (!url) return;
+
+  more.replaceChildren(
+    h("div", {},
+      h("h3", { class: "more__title" }, "Não achou o que procura?"),
+      h("p", { class: "more__text" }, "Tem mais peças no catálogo completo. Dá uma olhada e chama a gente pelo WhatsApp com a que você quiser.")),
+    h("a", { class: "btn", href: url, target: "_blank", rel: "noopener" }, "Ver catálogo completo ↗"));
+}
 
 function productCard(product, dropStatus, onAdd) {
   const { open, label } = availability(product, dropStatus);

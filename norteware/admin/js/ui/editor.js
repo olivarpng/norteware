@@ -32,8 +32,15 @@ function storeBox(store, edit) {
         inputmode: "tel",
         value: formatPhone(store.whatsapp),
         onChange: (e) => edit((c) => { c.store.whatsapp = digitsOnly(e.target.value); }, { render: true }),
+      })),
+      field("Link do catálogo (Drive)", h("input", {
+        class: "input",
+        type: "url",
+        placeholder: "https://drive.google.com/...",
+        value: store.catalogUrl,
+        onChange: (e) => edit((c) => { c.store.catalogUrl = e.target.value.trim(); }, { render: true }),
       }))),
-    h("p", { class: "hint" }, "Use 55 + DDD + número. É para esse número que o carrinho do site envia os pedidos."));
+    h("p", { class: "hint" }, "WhatsApp: use 55 + DDD + número; é para ele que o carrinho envia os pedidos. Catálogo: deixe vazio para esconder os botões, e compartilhe a pasta do Drive como “qualquer pessoa com o link” e só com permissão de visualização."));
 }
 
 function dropBox(drop, edit) {

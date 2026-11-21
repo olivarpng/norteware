@@ -1,5 +1,6 @@
 export const NO_SIZE = "Único";
 export const DEFAULT_WHATSAPP = "5517991427518";
+export const DEFAULT_CATALOG_URL = "https://drive.google.com/drive/folders/1ZRBsaHEfZvHrPo34hpzjUtzqgr1Dn1ib";
 
 export const PRODUCT_TYPES = {
   roupa: { label: "Roupa", sizes: ["P", "M", "G", "GG"] },
@@ -26,6 +27,20 @@ const sizeLabel = (value) => String(value ?? "").trim().slice(0, 8);
 
 export const digitsOnly = (value) => String(value ?? "").replace(/\D/g, "");
 export const isValidWhatsapp = (number) => /^\d{12,13}$/.test(number);
+
+export function cleanImage(value) {
+  const path = text(value);
+  return /^assets\/[\w./-]+$/.test(path) && !path.includes("..") ? path : cleanCatalogUrl(path);
+}
+
+export function cleanCatalogUrl(value) {
+  const url = text(value);
+  try {
+    return new URL(url).protocol === "https:" ? url : "";
+  } catch {
+    return "";
+  }
+}
 
 export const slugify = (value) =>
   value
@@ -129,7 +144,7 @@ function normalizeProduct(raw = {}) {
     category: Object.hasOwn(CATEGORIES, raw.category) ? raw.category : inferCategory(name, type),
     price: typeof raw.price === "number" && raw.price >= 0 ? raw.price : null,
     tag: TAGS.includes(raw.tag) ? raw.tag : "",
-    image: text(raw.image),
+    image: cleanImage(raw.image),
     active: raw.active !== false,
     sizes,
   };
@@ -140,7 +155,10 @@ export function normalizeCatalog(raw) {
   const whatsapp = digitsOnly(source.store?.whatsapp);
 
   return {
-    store: { whatsapp: isValidWhatsapp(whatsapp) ? whatsapp : DEFAULT_WHATSAPP },
+    store: {
+      whatsapp: isValidWhatsapp(whatsapp) ? whatsapp : DEFAULT_WHATSAPP,
+      catalogUrl: Object.hasOwn(source.store ?? {}, "catalogUrl") ? cleanCatalogUrl(source.store.catalogUrl) : DEFAULT_CATALOG_URL,
+    },
     drop: {
       edition: text(source.drop?.edition, "01"),
       note: text(source.drop?.note),
@@ -155,6 +173,7 @@ export function validateCatalog({ products, store }) {
   const ids = new Set();
 
   if (!isValidWhatsapp(store.whatsapp)) errors.push("WhatsApp inválido: use 55 + DDD + número.");
+  if (store.catalogUrl && !cleanCatalogUrl(store.catalogUrl)) errors.push("Link do catálogo inválido: use um endereço que comece com https://.");
 
   products.forEach((product, index) => {
     if (!product.name) errors.push(`A peça ${index + 1} está sem nome.`);

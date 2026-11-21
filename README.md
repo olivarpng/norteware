@@ -46,6 +46,10 @@ O fundo animado de fumaça roxa é desenhado na hora pelo navegador (WebGL), sem
 
 O drop é dividido em abas: **Todos, Calçados, Calças / Shorts, Camisetas e Moletom**. Cada peça tem uma **categoria** no painel, e é ela que decide em qual aba a peça aparece. Escolher uma categoria já usa a lista de tamanhos certa (calçado usa numeração, as demais usam P a GG). A aba **Outros** só aparece se existir alguma peça nessa categoria. Peças antigas sem categoria são encaixadas pelo nome (por exemplo, "Tênis..." vai para Calçados) até serem salvas de novo no painel.
 
+## Catálogo completo (Drive)
+
+Abaixo do drop há um botão **Ver catálogo completo**, e o carrinho tem o mesmo link no campo "Não achou o que procura?". O endereço fica no painel, no bloco **Loja**, e só aceita links `https://`. Deixando o campo vazio, os botões somem. A pasta do Drive deve ficar compartilhada como "qualquer pessoa com o link", só para visualização.
+
 ## Carrinho e pedidos
 
 O cliente escolhe o tamanho no card, clica em **Adicionar** e envia o pedido pelo WhatsApp, já com a mensagem pronta (nome, itens, total e, se quiser, "outros itens ou dúvidas"). O número que recebe os pedidos é editado no painel, no bloco **Loja**.

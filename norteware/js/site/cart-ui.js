@@ -32,6 +32,7 @@ export function initCart({ products, store }) {
           h("div", { class: "field" },
             h("label", { for: "cart-extra", class: "cart__label" }, "Não achou o que procura?"),
             h("p", { class: "cart__help" }, "Tranquilo! Conta pra gente qual produto você quer e trocamos uma ideia pra verificar tudo."),
+            store.catalogUrl && h("a", { class: "cart__catalog", href: store.catalogUrl, target: "_blank", rel: "noopener" }, "Ver o catálogo completo ↗"),
             extra),
           status,
           h("button", { class: "btn btn--primary", type: "submit" }, "Enviar pelo WhatsApp"),
